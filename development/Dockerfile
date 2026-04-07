@@ -1,7 +1,7 @@
 FROM php:8.4-fpm
 
 # Системные зависимости
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libjpeg-dev \
     libwebp-dev \
@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libonig-dev \
     libmemcached-dev \
-    default-mysql-client \
     unzip \
     git \
     && rm -rf /var/lib/apt/lists/*
