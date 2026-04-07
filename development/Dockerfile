@@ -32,17 +32,18 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
         bz2 \
         exif
 
-# imagick через PECL
-RUN pecl install imagick \
-    && docker-php-ext-enable imagick
+# Установка pie
+RUN curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /usr/local/bin/pie \
+    && chmod +x /usr/local/bin/pie
 
-# memcached через PECL
-RUN pecl install memcached \
-    && docker-php-ext-enable memcached
+# imagick через pie
+RUN pie install imagick/imagick
+
+# memcached через pie
+RUN pie install php-memcached/php-memcached
 
 # Xdebug для разработки
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+RUN pie install xdebug/xdebug
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
