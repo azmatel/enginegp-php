@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     libonig-dev \
     libmemcached-dev \
+    cron \
     unzip \
     git \
     && rm -rf /var/lib/apt/lists/*
