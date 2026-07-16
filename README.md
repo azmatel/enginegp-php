@@ -6,8 +6,9 @@ Docker images for PHP 8.4 FPM used in the EngineGP project.
 
 | Tag | Description |
 |-----|-------------|
-| `ghcr.io/azmatel/enginegp-php/php:8.4` | Production |
-| `ghcr.io/azmatel/enginegp-php/php:8.4-dev` | Development (with Xdebug) |
+| `ghcr.io/azmatel/enginegp-php/enginegp-php:latest` | Production (alias for `8.4`) |
+| `ghcr.io/azmatel/enginegp-php/enginegp-php:8.4` | Production |
+| `ghcr.io/azmatel/enginegp-php/enginegp-php:8.4-dev` | Development (with Xdebug) |
 
 ## PHP Extensions
 
@@ -25,7 +26,7 @@ Docker images for PHP 8.4 FPM used in the EngineGP project.
 ```yaml
 services:
   php:
-    image: ghcr.io/azmatel/enginegp-php/php:8.4
+    image: ghcr.io/azmatel/enginegp-php/enginegp-php:latest
     volumes:
       - ./app:/var/www/enginegp
     ports:
@@ -37,7 +38,7 @@ services:
 ```yaml
 services:
   php:
-    image: ghcr.io/azmatel/enginegp-php/php:8.4-dev
+    image: ghcr.io/azmatel/enginegp-php/enginegp-php:8.4-dev
     volumes:
       - ./app:/var/www/enginegp
     ports:
@@ -67,7 +68,7 @@ docker compose exec php composer require vendor/package
 ```yaml
 services:
   php:
-    image: ghcr.io/azmatel/enginegp-php/php:8.4
+    image: ghcr.io/azmatel/enginegp-php/enginegp-php:8.4
     volumes:
       - ./app:/var/www/enginegp
     working_dir: /var/www/enginegp
@@ -99,8 +100,8 @@ volumes:
 ## Local Build
 
 ```bash
-# Production
-docker build -t enginegp-php:8.4 ./production
+# Production (also tagged as `latest`)
+docker build -t enginegp-php:8.4 -t enginegp-php:latest ./production
 
 # Development
 docker build -t enginegp-php:8.4-dev ./development

@@ -38,10 +38,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Generate tags
+        id: gen_tags
+        run: |
+          TAGS="ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:${{ matrix.tag }}"
+          if [ "${{ matrix.tag }}" = "8.4" ]; then
+            TAGS="$TAGS,ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:latest"
+          fi
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+
       - name: Build & push
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:${{ matrix.tag }}
+          tags: ${{ steps.gen_tags.outputs.tags }}
