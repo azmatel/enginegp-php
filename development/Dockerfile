@@ -31,7 +31,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
         curl \
         gmp \
         bz2 \
-        exif
+        exif \
+        pcntl
 
 # Установка pie
 RUN curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /usr/local/bin/pie \
@@ -39,8 +40,7 @@ RUN curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /
 
 # PHP расширений через pie
 RUN pie install imagick/imagick \
-    && pie install php-memcached/php-memcached \
-    && pie install xdebug/xdebug
+    && pie install php-memcached/php-memcached
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

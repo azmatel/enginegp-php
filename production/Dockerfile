@@ -31,7 +31,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
         curl \
         gmp \
         bz2 \
-        exif
+        exif \
+        pcntl
 
 # Установка pie
 RUN curl -fsSL https://github.com/php/pie/releases/latest/download/pie.phar -o /usr/local/bin/pie \
