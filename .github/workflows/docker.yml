@@ -15,24 +15,22 @@ jobs:
         include:
           - context: ./production
             tag: "8.4"
-          - context: ./development
-            tag: "8.4-dev"
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set lowercase owner
         run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to ghcr.io
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -41,14 +39,11 @@ jobs:
       - name: Generate tags
         id: gen_tags
         run: |
-          TAGS="ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:${{ matrix.tag }}"
-          if [ "${{ matrix.tag }}" = "8.4" ]; then
-            TAGS="$TAGS,ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:latest"
-          fi
+          TAGS="ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:${{ matrix.tag }},ghcr.io/${{ env.REPO_OWNER }}/enginegp-php/enginegp-php:latest"
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
 
       - name: Build & push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: ${{ matrix.context }}
           push: true

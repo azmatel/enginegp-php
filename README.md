@@ -1,19 +1,24 @@
 # EngineGP PHP Docker Image
+
 Docker images for PHP 8.4 FPM used in the EngineGP project.
+
 ## Images
+
 | Tag | Description |
 |-----|-------------|
 | `ghcr.io/azmatel/enginegp-php/enginegp-php:latest` | Production (alias for `8.4`) |
 | `ghcr.io/azmatel/enginegp-php/enginegp-php:8.4` | Production |
-| `ghcr.io/azmatel/enginegp-php/enginegp-php:8.4-dev` | Development |
+
 ## PHP Extensions
+
 - `pdo_mysql`, `mysqli` — MySQL database support
 - `gd` — image processing (JPEG, WebP, FreeType)
 - `imagick` — ImageMagick
 - `zip`, `curl`, `gmp`, `bz2`, `xml`, `mbstring`, `exif`, `pcntl`
 - `memcached` — Memcached caching
+
 ## Quick Start
-### Production
+
 ```yaml
 services:
   php:
@@ -23,27 +28,24 @@ services:
     ports:
       - "9000:9000"
 ```
-### Development
-```yaml
-services:
-  php:
-    image: ghcr.io/azmatel/enginegp-php/enginegp-php:8.4-dev
-    volumes:
-      - ./app:/var/www/enginegp
-    ports:
-      - "9000:9000"
-```
+
 ## Composer Dependencies
+
 After starting the container, install project dependencies:
+
 ```bash
 # Install all dependencies
 docker compose exec php composer install
+
 # Install without dev dependencies (production)
 docker compose exec php composer install --no-dev --optimize-autoloader
+
 # Add a new package
 docker compose exec php composer require vendor/package
 ```
+
 ### Example docker-compose.yaml
+
 ```yaml
 services:
   php:
@@ -53,6 +55,7 @@ services:
     working_dir: /var/www/enginegp
     depends_on:
       - mysql
+
   mysql:
     image: mysql:8.0
     environment:
@@ -60,6 +63,7 @@ services:
       MYSQL_DATABASE: enginegp
     volumes:
       - mysql_data:/var/lib/mysql
+
   nginx:
     image: nginx:alpine
     ports:
@@ -69,24 +73,26 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
+
 volumes:
   mysql_data:
 ```
+
 ## Local Build
+
 ```bash
-# Production (also tagged as `latest`)
 docker build -t enginegp-php:8.4 -t enginegp-php:latest ./production
-# Development
-docker build -t enginegp-php:8.4-dev ./development
 ```
+
 ## CI/CD
-On push to the `main` branch, both images are automatically built and published via GitHub Actions.
+
+The image is built and published via GitHub Actions, triggered manually (`workflow_dispatch`).
+
 ## Structure
+
 ```
 ├── production/
 │   └── Dockerfile      # Production image
-├── development/
-│   └── Dockerfile      # Development image
 └── .github/
     └── workflows/
         └── docker.yml  # Automated build
